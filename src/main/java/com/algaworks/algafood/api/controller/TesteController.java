@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
@@ -23,6 +25,15 @@ public class TesteController {
 	
 	@Autowired
 	private RestauranteRepository restauranteRepository;
+	
+	@GetMapping("/produtos")
+	public List<Produto> produtos() {
+		List<Produto> produtos = new ArrayList<>();
+		
+		restauranteRepository.findAll().forEach((restaurante) -> restaurante.getProdutos().forEach((produto) -> produtos.add(produto)));
+		
+		return produtos;
+	}
 	
 	@GetMapping("/cozinhas-por-nome-parcial")
 	public List<Cozinha> cozinhasPorNomeParcial(String nome) {
