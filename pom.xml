@@ -77,6 +77,20 @@
 			<scope>runtime</scope>
 		</dependency>
 		
+		<!-- Flyway -->
+		<!-- Versionamento do banco de dados -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+		
+		<!-- MySql -->
+		<!-- Integração do Flyway com MySQL -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
