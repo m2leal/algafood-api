@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-		 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.17</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>2.7.18</version>
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	
+
 	<groupId>com.algaworks</groupId>
 	<artifactId>algafood-api</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>algafood-api</name>
 	<description>API de delivery de comida</description>
-	
+
 	<properties>
-		<java.version>19</java.version>
+		<java.version>12</java.version>
 	</properties>
-	
+
 	<dependencies>
 		<!-- Starter WEB -->
 		<!-- Usado para construir web services RESTful com Spring MVC e Tomcat -->
@@ -29,7 +29,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 		<!-- Starter TEST -->
 		<!-- Usado para automatização de testes -->
 		<dependency>
@@ -37,14 +37,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- DevTools -->
 		<!-- Ajuda no desenvolvolvimento e.g. LiveReload -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
-		
+
 		<!-- Configuration Processor -->
 		<!-- Ajuda as IDEs na integração com application.properties -->
 		<dependency>
@@ -59,7 +59,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		
+
 		<!-- LOMBOCK -->
 		<!-- Gerenciamento das classes do domínio -->
 		<dependency>
@@ -67,7 +67,7 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<!-- MySql -->
 		<!-- Driver do mysql para trabalhar com o JPA -->
 		<dependency>
@@ -76,21 +76,36 @@
 			<version>8.0.33</version>
 			<scope>runtime</scope>
 		</dependency>
-		
+
 		<!-- Flyway -->
 		<!-- Versionamento do banco de dados -->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 		</dependency>
-		
+
 		<!-- MySql -->
 		<!-- Integração do Flyway com MySQL -->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-mysql</artifactId>
 		</dependency>
-		
+
+		<!-- H2 -->
+		<!-- Contém classe utilitaria para Exceptions -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>2.1.210</version><!--$NO-MVN-MAN-VER$--><!--Warning: Ainda não há testes para a versão 2.1.214-->
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Commons Lang -->
+		<!-- Banco de dados em memória -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
