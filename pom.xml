@@ -76,7 +76,7 @@
 		</dependency>
 
 		<!-- H2 -->
-		<!-- Contém classe utilitaria para Exceptions -->
+		<!-- Banco de dados em memória -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -85,10 +85,17 @@
 		</dependency>
 
 		<!-- Commons Lang -->
-		<!-- Banco de dados em memória -->
+		<!-- Contém classe utilitaria para Exceptions -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		
+		<!-- Bean Validation -->
+		<!-- Provê anotações para validações -->
+		<dependency> 
+			<groupId>org.springframework.boot</groupId> 
+			<artifactId>spring-boot-starter-validation</artifactId> 
 		</dependency>
 	</dependencies>
 
