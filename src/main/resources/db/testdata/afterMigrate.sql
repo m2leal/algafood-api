@@ -1,3 +1,30 @@
+SET REFERENTIAL_INTEGRITY FALSE;
+
+delete from cidade;
+delete from cozinha;
+delete from estado;
+delete from forma_pagamento;
+delete from grupo;
+delete from grupo_permissao;
+delete from permissao;
+delete from produto;
+delete from restaurante;
+delete from restaurante_forma_pagamento;
+delete from usuario;
+delete from usuario_grupo;
+
+SET REFERENTIAL_INTEGRITY TRUE;
+
+ALTER TABLE cidade ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE cozinha ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE estado ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE forma_pagamento ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE grupo ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE permissao ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE produto ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE restaurante ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE usuario ALTER COLUMN id RESTART WITH 1;
+
 insert into cozinha (nome) values ('Tailandesa');
 insert into cozinha (nome) values ('Indiana');
 insert into cozinha (nome) values ('Argentina');
