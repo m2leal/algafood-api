@@ -2,9 +2,10 @@ create table pedido (
 	id bigint not null auto_increment,
 	subtotal decimal not null,
 	taxa_frete decimal not null,
+
 	valor_total decimal not null,
 	data_criacao datetime not null,
-	data_corfirmacao datetime null,
+	data_confirmacao datetime null,
 	data_cancelamento datetime null,
 	data_entrega datetime null,
 	status varchar(10) not null,
@@ -21,6 +22,7 @@ create table pedido (
 	forma_pagamento_id bigint not null,
 	
 	primary key (id),
+
 	constraint fk_pedido_restaurante foreign key (restaurante_id) references restaurante (id),
 	constraint fk_pedido_usuario_cliente foreign key (usuario_cliente_id) references usuario (id),
 	constraint fk_pedido_forma_pagamento foreign key (forma_pagamento_id) references forma_pagamento (id)
