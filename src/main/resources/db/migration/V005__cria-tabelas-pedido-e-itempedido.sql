@@ -1,9 +1,9 @@
 create table pedido (
 	id bigint not null auto_increment,
 	subtotal decimal not null,
-	taxa_frete decimal not null,
+	taxa_frete decimal(10,2) not null,
 
-	valor_total decimal not null,
+	valor_total decimal(10,2) not null,
 	data_criacao datetime not null,
 	data_confirmacao datetime null,
 	data_cancelamento datetime null,
@@ -31,8 +31,8 @@ create table pedido (
 create table item_pedido (
 	id bigint not null auto_increment,
 	quantidade smallint not null,
-	preco_unitario decimal not null,
-	preco_total decimal not null,
+	preco_unitario decimal(10,2) not null,
+	preco_total decimal(10,2) not null,
 	observacao varchar(255) null,
 	pedido_id bigint not null,
 	produto_id bigint not null,

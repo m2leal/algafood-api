@@ -83,7 +83,7 @@
 			<version>2.1.210</version><!--$NO-MVN-MAN-VER$--><!--Resolve Warning: Ainda não há testes para a versão 2.1.214-->
 			<scope>runtime</scope>
 		</dependency>
-
+		
 		<!-- Commons Lang -->
 		<!-- Contém classe utilitaria para Exceptions -->
 		<dependency>
@@ -112,6 +112,28 @@
 			<groupId>org.modelmapper</groupId> 
 			<artifactId>modelmapper</artifactId>
 			<version>3.1.0</version>
+		</dependency>
+		
+		<!-- Squiggly -->
+		<!-- Filtro de Propriedades para o Jackson -->
+		<dependency>
+			<groupId>com.github.bohnman</groupId>
+			<artifactId>squiggly-filter-jackson</artifactId>
+			<version>1.3.18</version>
+		</dependency>
+		
+		<!-- JasperReports -->
+		<!-- Geração de relatórios em PDF -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.21.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports-functions</artifactId>
+			<version>6.21.2</version>
 		</dependency>
 	</dependencies>
 
