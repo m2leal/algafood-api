@@ -135,6 +135,14 @@
 			<artifactId>jasperreports-functions</artifactId>
 			<version>6.21.2</version>
 		</dependency>
+		
+		<!-- AWS -->
+		<!-- Bilbioteca Java para trabalhar com AWS -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.12.701</version>
+		</dependency>
 	</dependencies>
 
 	<build>
