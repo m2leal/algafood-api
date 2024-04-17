@@ -37,6 +37,20 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- Starter MAIL -->
+		<!-- Usado para envio de emails -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		
+		<!-- Starter FREEMARKER -->
+		<!-- Usado para edição de HTML através de atributos java -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-freemarker</artifactId>
+		</dependency>
 
 		<!-- DevTools -->
 		<!-- Ajuda no desenvolvolvimento e.g. LiveReload -->
@@ -143,6 +157,7 @@
 			<artifactId>aws-java-sdk-s3</artifactId>
 			<version>1.12.701</version>
 		</dependency>
+		
 	</dependencies>
 
 	<build>
