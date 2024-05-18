@@ -51,6 +51,13 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 		
+		<!-- Starter HATEOAS -->
+		<!-- Ajuda a criar links entre representações de recursos -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
+		
 		<!-- Starter FREEMARKER -->
 		<!-- Usado para edição de HTML através de atributos java -->
 		<dependency>
@@ -175,25 +182,6 @@
 			<artifactId>aws-java-sdk-s3</artifactId>
 			<version>${aws-java-sdk-s3.version}</version>
 		</dependency>
-		
-		<!-- Spring Fox/OpenAPI -->
-		<!-- Gerador de documentação -->
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>${springfox.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>${springfox.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-bean-validators</artifactId>
-			<version>${springfox.version}</version>
-		</dependency>
-		
 	</dependencies>
 
 	<build>

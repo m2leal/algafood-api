@@ -1,17 +1,17 @@
 package com.algaworks.algafood.api.model;
 
-import io.swagger.annotations.ApiModelProperty;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
 import lombok.Getter;
 import lombok.Setter;
 
+@Relation(collectionRelation = "formaPagamento")
 @Getter
 @Setter
-public class FormaPagamentoModel {
+public class FormaPagamentoModel extends RepresentationModel<FormaPagamentoModel> {
 	
-	@ApiModelProperty(example = "1")
 	private Long id;
-	
-	@ApiModelProperty(example = "Cartão de crédito")
 	private String descricao;
 	
 }

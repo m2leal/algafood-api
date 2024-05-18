@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,14 +22,13 @@ import com.algaworks.algafood.api.assembler.GrupoInputDisassembler;
 import com.algaworks.algafood.api.assembler.GrupoModelAssembler;
 import com.algaworks.algafood.api.model.GrupoModel;
 import com.algaworks.algafood.api.model.input.GrupoInput;
-import com.algaworks.algafood.api.openapi.controller.GrupoControllerOpenApi;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.repository.GrupoRepository;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
 
 @RestController
 @RequestMapping(path = "/grupos", produces = MediaType.APPLICATION_JSON_VALUE)
-public class GrupoController implements GrupoControllerOpenApi {
+public class GrupoController {
 	
 	@Autowired
 	private GrupoRepository grupoRepository;
@@ -43,8 +43,10 @@ public class GrupoController implements GrupoControllerOpenApi {
 	private GrupoInputDisassembler grupoInputDisassembler;
 	
 	@GetMapping
-	public List<GrupoModel> listar() {
-		return grupoModelAssembler.toCollectionModel(grupoRepository.findAll());
+	public CollectionModel<GrupoModel> listar() {
+		List<Grupo> todosGrupos = grupoRepository.findAll();
+		
+		return grupoModelAssembler.toCollectionModel(todosGrupos);
 	}
 	
 	@GetMapping("/{id}")

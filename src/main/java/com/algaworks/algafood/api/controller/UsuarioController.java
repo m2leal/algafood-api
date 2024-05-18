@@ -1,10 +1,9 @@
 package com.algaworks.algafood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,14 +21,13 @@ import com.algaworks.algafood.api.model.UsuarioModel;
 import com.algaworks.algafood.api.model.input.SenhaInput;
 import com.algaworks.algafood.api.model.input.UsuarioInput;
 import com.algaworks.algafood.api.model.input.UsuarioSemSenhaInput;
-import com.algaworks.algafood.api.openapi.controller.UsuarioControllerOpenApi;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 
 @RestController
 @RequestMapping(path = "/usuarios", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UsuarioController implements UsuarioControllerOpenApi {
+public class UsuarioController {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -44,7 +42,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 	private UsuarioInputDisassembler usuarioInputDisassembler;
 	
 	@GetMapping
-	public List<UsuarioModel> listar() {
+	public CollectionModel<UsuarioModel> listar() {
 		return usuarioModelAssembler.toCollectionModel(usuarioRepository.findAll());
 	}
 	

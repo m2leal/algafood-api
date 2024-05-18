@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,14 +28,13 @@ import com.algaworks.algafood.api.assembler.FormaPagamentoInputDisassembler;
 import com.algaworks.algafood.api.assembler.FormaPagamentoModelAssembler;
 import com.algaworks.algafood.api.model.FormaPagamentoModel;
 import com.algaworks.algafood.api.model.input.FormaPagamentoInput;
-import com.algaworks.algafood.api.openapi.controller.FormaPagamentoControllerOpenApi;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
 
 @RestController
 @RequestMapping(path = "/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
-public class FormaPagamentoController implements FormaPagamentoControllerOpenApi {
+public class FormaPagamentoController {
 	
 	@Autowired
 	private FormaPagamentoRepository formaPagamentoRepository;
@@ -49,7 +49,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 	private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 	
 	@GetMapping
-	public ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request) {
+	public ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 		
 		String eTag = "0";
@@ -64,12 +64,13 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 		
 		List<FormaPagamento> todasFormasPagamento = formaPagamentoRepository.findAll();
 		
-		List<FormaPagamentoModel> formasPagamentoModel = formaPagamentoModelAssembler.toCollectionModel(todasFormasPagamento);
+		CollectionModel<FormaPagamentoModel> formasPagamentosModel = 
+				formaPagamentoModelAssembler.toCollectionModel(todasFormasPagamento);
 		
 		return ResponseEntity.ok()
 				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
 				.eTag(eTag)
-				.body(formasPagamentoModel);
+				.body(formasPagamentosModel);
 	}
 	
 	@GetMapping("/{id}")
