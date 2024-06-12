@@ -27,6 +27,8 @@ import com.algaworks.algafood.api.v1.model.PedidoResumoModel;
 import com.algaworks.algafood.api.v1.model.input.PedidoInput;
 import com.algaworks.algafood.core.data.PageWrapper;
 import com.algaworks.algafood.core.data.PageableTranslator;
+import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
@@ -58,6 +60,10 @@ public class PedidoController {
 	@Autowired
 	private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
 	
+	@Autowired
+	private AlgaSecurity algaSecurity;
+	
+	@CheckSecurity.Pedidos.PodePesquisar
 	@GetMapping
 	public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
 		Pageable pageableTraduzido = traduzirPageable(pageable);
@@ -69,6 +75,7 @@ public class PedidoController {
 		return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
 	}
 	
+	@CheckSecurity.Pedidos.PodeBuscar
 	@GetMapping("/{codigoPedido}")
 	public PedidoModel buscar(@PathVariable String codigoPedido) {
 		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
@@ -76,15 +83,15 @@ public class PedidoController {
 		return pedidoModelAssembler.toModel(pedido);
 	}
 	
+	@CheckSecurity.Pedidos.PodeCriar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
 		try {
 			Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
 			
-			// TODO pegar usuário autenticado
 			novoPedido.setCliente(new Usuario());
-			novoPedido.getCliente().setId(1L);
+			novoPedido.getCliente().setId(algaSecurity.getUsuarioId());
 			
 			novoPedido = emissaoPedido.emitir(novoPedido);
 			

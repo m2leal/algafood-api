@@ -21,6 +21,7 @@ import com.algaworks.algafood.api.v1.model.UsuarioModel;
 import com.algaworks.algafood.api.v1.model.input.SenhaInput;
 import com.algaworks.algafood.api.v1.model.input.UsuarioInput;
 import com.algaworks.algafood.api.v1.model.input.UsuarioSemSenhaInput;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
@@ -41,11 +42,13 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioInputDisassembler usuarioInputDisassembler;
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<UsuarioModel> listar() {
 		return usuarioModelAssembler.toCollectionModel(usuarioRepository.findAll());
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping("/{id}")
 	public UsuarioModel buscar(@PathVariable Long id) {
 		Usuario usuario = cadastroUsuarioService.buscarOuFalhar(id);
@@ -53,6 +56,7 @@ public class UsuarioController {
 		return usuarioModelAssembler.toModel(usuario);
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public UsuarioModel adicionar(@RequestBody @Valid UsuarioInput usuarioInput) {
@@ -62,6 +66,7 @@ public class UsuarioController {
 		return usuarioModelAssembler.toModel(usuario);
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarUsuario
 	@PutMapping("/{id}")
 	public UsuarioModel atualizar(@PathVariable Long id, @RequestBody @Valid UsuarioSemSenhaInput usuarioSemSenhaInput) {
 		Usuario usuarioAtual = cadastroUsuarioService.buscarOuFalhar(id);
@@ -71,6 +76,7 @@ public class UsuarioController {
 		return usuarioModelAssembler.toModel(cadastroUsuarioService.salvar(usuarioAtual));
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
 	@PutMapping("/{usuarioId}/senha")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void alterarSenha(@PathVariable Long usuarioId, @RequestBody @Valid SenhaInput senha) {

@@ -10,6 +10,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import com.algaworks.algafood.api.v1.assembler.CozinhaInputDisassembler;
 import com.algaworks.algafood.api.v1.assembler.CozinhaModelAssembler;
 import com.algaworks.algafood.api.v1.model.CozinhaModel;
 import com.algaworks.algafood.api.v1.model.input.CozinhaInput;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
@@ -47,8 +49,10 @@ public class CozinhaController {
 	@Autowired
 	private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
 	
+	@CheckSecurity.Cozinhas.PodeConsultar
 	@GetMapping
 	public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable) {
+		System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 		
 		PagedModel<CozinhaModel> cozinhasPagedModel = pagedResourcesAssembler
@@ -57,6 +61,7 @@ public class CozinhaController {
 		return cozinhasPagedModel;
 	}
 	
+	@CheckSecurity.Cozinhas.PodeConsultar
 	@GetMapping("/{id}")
 	public CozinhaModel buscar(@PathVariable Long id) {
 		Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(id);
@@ -64,6 +69,7 @@ public class CozinhaController {
 		return cozinhaModelAssembler.toModel(cozinha);
 	}
 	
+	@CheckSecurity.Cozinhas.PodeEditar
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
 	public CozinhaModel adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
@@ -73,6 +79,7 @@ public class CozinhaController {
 		return cozinhaModelAssembler.toModel(cozinha);
 	}
 	
+	@CheckSecurity.Cozinhas.PodeEditar
 	@PutMapping("/{id}")
 	public CozinhaModel atualizar(@PathVariable Long id, @RequestBody @Valid CozinhaInput cozinhaInput) {
 		Cozinha cozinhaAtual = cadastroCozinhaService.buscarOuFalhar(id);
@@ -84,6 +91,7 @@ public class CozinhaController {
 		return cozinhaModelAssembler.toModel(cozinhaAtual);
 	}
 	
+	@CheckSecurity.Cozinhas.PodeEditar
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long id) {

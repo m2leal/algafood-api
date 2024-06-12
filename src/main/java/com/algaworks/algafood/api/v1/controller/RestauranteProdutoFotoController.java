@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.algaworks.algafood.api.v1.assembler.FotoProdutoModelAssembler;
 import com.algaworks.algafood.api.v1.model.FotoProdutoModel;
 import com.algaworks.algafood.api.v1.model.input.FotoProdutoInput;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.model.Produto;
@@ -50,6 +51,7 @@ public class RestauranteProdutoFotoController {
 	@Autowired
 	private FotoStorageService fotoStorageService;
 	
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput, @RequestPart(required = true) MultipartFile arquivo) throws IOException {
 		Produto produto = cadastroProdutoService.buscarOuFalhar(restauranteId, produtoId);
@@ -66,6 +68,7 @@ public class RestauranteProdutoFotoController {
 		return fotoProdutoModelAssembler.toModel(fotoSalva);
 	}
 	
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		FotoProduto fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
@@ -100,6 +103,7 @@ public class RestauranteProdutoFotoController {
 		}
 	}
 	
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void excluir(@PathVariable Long restauranteId, @PathVariable Long produtoId) {

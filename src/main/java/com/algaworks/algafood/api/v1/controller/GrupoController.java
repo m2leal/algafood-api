@@ -22,6 +22,7 @@ import com.algaworks.algafood.api.v1.assembler.GrupoInputDisassembler;
 import com.algaworks.algafood.api.v1.assembler.GrupoModelAssembler;
 import com.algaworks.algafood.api.v1.model.GrupoModel;
 import com.algaworks.algafood.api.v1.model.input.GrupoInput;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.repository.GrupoRepository;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
@@ -42,6 +43,7 @@ public class GrupoController {
 	@Autowired
 	private GrupoInputDisassembler grupoInputDisassembler;
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<GrupoModel> listar() {
 		List<Grupo> todosGrupos = grupoRepository.findAll();
@@ -49,6 +51,7 @@ public class GrupoController {
 		return grupoModelAssembler.toCollectionModel(todosGrupos);
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping("/{id}")
 	public GrupoModel buscar(@PathVariable Long id) {
 		Grupo grupo = cadastroGrupoService.buscarOuFalhar(id);
@@ -56,6 +59,7 @@ public class GrupoController {
 		return grupoModelAssembler.toModel(grupo);
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public GrupoModel adicionar(@RequestBody @Valid GrupoInput grupoInput) {
@@ -65,6 +69,7 @@ public class GrupoController {
 		return grupoModelAssembler.toModel(grupo);
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@PutMapping("/{id}")
 	public GrupoModel atualizar(@PathVariable Long id, @RequestBody @Valid GrupoInput grupoInput) {
 		Grupo grupoAtual = cadastroGrupoService.buscarOuFalhar(id);
@@ -74,6 +79,7 @@ public class GrupoController {
 		return grupoModelAssembler.toModel(cadastroGrupoService.salvar(grupoAtual));
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long id) {

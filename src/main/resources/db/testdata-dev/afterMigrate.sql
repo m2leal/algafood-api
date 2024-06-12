@@ -16,6 +16,7 @@ delete from usuario_grupo;
 delete from pedido;
 delete from item_pedido;
 delete from foto_produto;
+delete from oauth_client_details;
 
 SET REFERENTIAL_INTEGRITY TRUE;
 
@@ -57,8 +58,16 @@ insert into forma_pagamento (descricao, data_atualizacao) values ('Cartão de cr
 insert into forma_pagamento (descricao, data_atualizacao) values ('Cartão de débito', CURRENT_TIMESTAMP);
 insert into forma_pagamento (descricao, data_atualizacao) values ('Dinheiro', CURRENT_TIMESTAMP);
 
-insert into permissao (nome, descricao) values ('CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
 insert into permissao (nome, descricao) values ('EDITAR_COZINHAS', 'Permite editar cozinhas');
+insert into permissao (nome, descricao) values ('EDITAR_FORMAS_PAGAMENTO', 'Permite criar ou editar formas de pagamento');
+insert into permissao (nome, descricao) values ('EDITAR_CIDADES', 'Permite criar ou editar cidades');
+insert into permissao (nome, descricao) values ('EDITAR_ESTADOS', 'Permite criar ou editar estados');
+insert into permissao (nome, descricao) values ('CONSULTAR_USUARIOS_GRUPOS_PERMISSOES', 'Permite consultar usuários');
+insert into permissao (nome, descricao) values ('EDITAR_USUARIOS_GRUPOS_PERMISSOES', 'Permite criar ou editar usuários');
+insert into permissao (nome, descricao) values ('EDITAR_RESTAURANTES', 'Permite criar, editar ou gerenciar restaurantes');
+insert into permissao (nome, descricao) values ('CONSULTAR_PEDIDOS', 'Permite consultar pedidos');
+insert into permissao (nome, descricao) values ('GERENCIAR_PEDIDOS', 'Permite gerenciar pedidos');
+insert into permissao (nome, descricao) values ('GERAR_RELATORIOS', 'Permite gerar relatórios');
 
 insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
 
@@ -79,16 +88,30 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Esp
 
 insert into grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
 
-insert into grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1); 
+-- Adiciona todas as permissoes no grupo do gerente
+insert into grupo_permissao (grupo_id, permissao_id)
+select 1, id from permissao;
+
+-- Adiciona permissoes no grupo do vendedor
+insert into grupo_permissao (grupo_id, permissao_id)
+select 2, id from permissao where nome like 'CONSULTAR_%';
+
+-- Adiciona permissoes no grupo do auxiliar
+insert into grupo_permissao (grupo_id, permissao_id)
+select 3, id from permissao where nome like 'CONSULTAR_%';
+
+-- Adiciona permissoes no grupo cadastrador
+insert into grupo_permissao (grupo_id, permissao_id)
+select 4, id from permissao where nome like '%_RESTAURANTES' or nome like '%_PRODUTOS';
 
 insert into usuario (nome, email, senha, data_cadastro) values
-	('João da Silva', 'joao.ger@algafood.com', '123', CURRENT_TIMESTAMP),
-	('Maria Joaquina', 'maria.vnd@algafood.com', '123', CURRENT_TIMESTAMP),
-	('José Souza', 'jose.aux@algafood.com', '123', CURRENT_TIMESTAMP),
-	('Sebastião Martins', 'sebastiao.cad@algafood.com', '123', CURRENT_TIMESTAMP),
-	('Manoel Lima', 'manoel.loja@gmail.com', '123', CURRENT_TIMESTAMP),
-	('Débora Mendonça', 'mrleal+debora@gmail.com', '123', CURRENT_TIMESTAMP),
-	('Carlos Lima', 'mrleal+carlos@gmail.com', '123', CURRENT_TIMESTAMP);
+	('João da Silva', 'joao.ger@algafood.com.br', '$2y$12$NSsM4gEOR7MKogflKR7GMeYugkttjNhAJMvFdHrBLaLp2HzlggP5W', CURRENT_TIMESTAMP),
+	('Maria Joaquina', 'maria.vnd@algafood.com.br', '$2y$12$NSsM4gEOR7MKogflKR7GMeYugkttjNhAJMvFdHrBLaLp2HzlggP5W', CURRENT_TIMESTAMP),
+	('José Souza', 'jose.aux@algafood.com.br', '$2y$12$NSsM4gEOR7MKogflKR7GMeYugkttjNhAJMvFdHrBLaLp2HzlggP5W', CURRENT_TIMESTAMP),
+	('Sebastião Martins', 'sebastiao.cad@algafood.com.br', '$2y$12$NSsM4gEOR7MKogflKR7GMeYugkttjNhAJMvFdHrBLaLp2HzlggP5W', CURRENT_TIMESTAMP),
+	('Manoel Lima', 'manoel.loja@gmail.com', '$2y$12$NSsM4gEOR7MKogflKR7GMeYugkttjNhAJMvFdHrBLaLp2HzlggP5W', CURRENT_TIMESTAMP),
+	('Débora Mendonça', 'mrleal+debora@gmail.com', '$2y$12$NSsM4gEOR7MKogflKR7GMeYugkttjNhAJMvFdHrBLaLp2HzlggP5W', CURRENT_TIMESTAMP),
+	('Carlos Lima', 'mrleal+carlos@gmail.com', '$2y$12$NSsM4gEOR7MKogflKR7GMeYugkttjNhAJMvFdHrBLaLp2HzlggP5W', CURRENT_TIMESTAMP);
 
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
 
@@ -126,3 +149,8 @@ values ('8d774bcf-b238-42f3-aef1-5fb388754d63', 1, 3, 2, 1, '38400-200', 'Rua 10
 
 insert into item_pedido (pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
 values (5, 3, 1, 87.2, 87.2, null);
+
+insert into oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, autoapprove) values
+	('algafood-web', null, '$2y$12$w3igMjsfS5XoAYuowoH3C.54vRFWlcXSHLjX7MwF990Kc2KKKh72e', 'READ,WRITE', 'password', null, null, 60 * 60 * 6, 60 * 24 * 60 * 60, null),
+	('foodanalytics', null, '$2a$12$EUtbdFyYPQkrqqGrQkloQuVElhXIOmXCs3Rg2Y3jjEuqRL2xTe.d6', 'READ,WRITE', 'authorization_code', 'http://www.foodanalytics.local:8082', null, null, null, null),
+	('faturamento', null, '$2y$12$fHixriC7yXX/i1/CmpnGH.RFyK/l5YapLCFOEbIktONjE8ZDykSnu', 'READ,WRITE', 'client_credentials', null, 'CONSULTAR_PEDIDOS,GERAR_RELATORIOS', null, null, null);
