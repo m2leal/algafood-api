@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import com.algaworks.algafood.api.v1.assembler.CidadeInputDisassembler;
 import com.algaworks.algafood.api.v1.assembler.CidadeModelAssembler;
 import com.algaworks.algafood.api.v1.model.CidadeModel;
 import com.algaworks.algafood.api.v1.model.input.CidadeInput;
+import com.algaworks.algafood.api.v1.openapi.controller.CidadeControllerOpenApi;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -32,7 +34,7 @@ import com.algaworks.algafood.domain.service.CadastroCidadeService;
 
 @RestController
 @RequestMapping(path = "/v1/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CidadeController {
+public class CidadeController implements CidadeControllerOpenApi {
 	
 	@Autowired
 	private CidadeRepository cidadeRepository;
@@ -47,6 +49,7 @@ public class CidadeController {
 	private CidadeInputDisassembler cidadeInputDisassembler;       
 	
 	@CheckSecurity.Cidades.PodeConsultar
+	@Override
 	@GetMapping
 	public CollectionModel<CidadeModel> listar() {
 		List<Cidade> todasCidades = cidadeRepository.findAll();
@@ -55,6 +58,7 @@ public class CidadeController {
 	}
 	
 	@CheckSecurity.Cidades.PodeConsultar
+	@Override
 	@GetMapping("/{id}")
 	public CidadeModel buscar(@PathVariable Long id) {
 		Cidade cidade = cadastroCidadeService.buscarOuFalhar(id);
@@ -63,6 +67,7 @@ public class CidadeController {
 	}
 	
 	@CheckSecurity.Cidades.PodeEditar
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
@@ -82,6 +87,7 @@ public class CidadeController {
 	}
 	
 	@CheckSecurity.Cidades.PodeEditar
+	@Override
 	@PutMapping("/{id}")
 	public CidadeModel atualizar(@PathVariable Long id, @RequestBody @Valid CidadeInput cidadeInput) {
 		try {
@@ -99,10 +105,12 @@ public class CidadeController {
 	}
 	
 	@CheckSecurity.Cidades.PodeEditar
+	@Override
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long id) {
-		cadastroCidadeService.excluir(id);	
+	public ResponseEntity<Void> remover(@PathVariable Long cidadeId) {
+		cadastroCidadeService.excluir(cidadeId);	
+		return ResponseEntity.noContent().build();
 	}
 	
 }

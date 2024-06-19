@@ -23,6 +23,7 @@ import com.algaworks.algafood.api.v1.assembler.ProdutoInputDisassembler;
 import com.algaworks.algafood.api.v1.assembler.ProdutoModelAssembler;
 import com.algaworks.algafood.api.v1.model.ProdutoModel;
 import com.algaworks.algafood.api.v1.model.input.ProdutoInput;
+import com.algaworks.algafood.api.v1.openapi.controller.RestauranteProdutoControllerOpenApi;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -32,7 +33,7 @@ import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 
 @RestController
 @RequestMapping(path = "/v1/restaurantes/{restauranteId}/produtos",  produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestauranteProdutoController {
+public class RestauranteProdutoController implements RestauranteProdutoControllerOpenApi {
 	
 	@Autowired
 	private ProdutoRepository produtoRepository;
@@ -53,6 +54,7 @@ public class RestauranteProdutoController {
 	private AlgaLinks algaLinks;
 	
 	@CheckSecurity.Restaurantes.PodeConsultar
+	@Override
 	@GetMapping
 	public CollectionModel<ProdutoModel> listar(@PathVariable Long restauranteId, @RequestParam(required = false) Boolean incluirInativos) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
@@ -70,6 +72,7 @@ public class RestauranteProdutoController {
 	}
 	
 	@CheckSecurity.Restaurantes.PodeConsultar
+	@Override
 	@GetMapping("/{produtoId}")
 	public ProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		Produto produto = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
@@ -78,6 +81,7 @@ public class RestauranteProdutoController {
 	}
 	
 	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProdutoModel adicionar(@PathVariable Long restauranteId, @RequestBody @Valid ProdutoInput produtoInput) {
@@ -92,6 +96,7 @@ public class RestauranteProdutoController {
 	}
 	
 	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
+	@Override
 	@PutMapping("/{produtoId}")
 	public ProdutoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,
 			@RequestBody @Valid ProdutoInput produtoInput) {

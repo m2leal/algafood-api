@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.assembler.PermissaoModelAssembler;
 import com.algaworks.algafood.api.v1.model.PermissaoModel;
+import com.algaworks.algafood.api.v1.openapi.controller.GrupoPermissaoControllerOpenApi;
 import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Grupo;
@@ -23,7 +24,7 @@ import com.algaworks.algafood.domain.service.CadastroGrupoService;
 
 @RestController
 @RequestMapping(path = "/v1/grupos/{grupoId}/permissoes", produces = MediaType.APPLICATION_JSON_VALUE)
-public class GrupoPermissaoController {
+public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi {
 	
 	@Autowired
 	private CadastroGrupoService cadastroGrupoService;
@@ -38,6 +39,7 @@ public class GrupoPermissaoController {
 	private AlgaSecurity algaSecurity;
 	
 	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
+	@Override
 	@GetMapping
 	public CollectionModel<PermissaoModel> listar(@PathVariable Long grupoId) {
 		Grupo grupo = cadastroGrupoService.buscarOuFalhar(grupoId);
@@ -61,6 +63,7 @@ public class GrupoPermissaoController {
 	}
 	
 	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
+	@Override
 	@DeleteMapping("/{permissaoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> desassociar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
@@ -70,6 +73,7 @@ public class GrupoPermissaoController {
 	}
 	
 	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
+	@Override
 	@PutMapping("/{permissaoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> associar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {

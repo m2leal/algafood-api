@@ -25,6 +25,7 @@ import com.algaworks.algafood.api.v1.assembler.PedidoResumoModelAssembler;
 import com.algaworks.algafood.api.v1.model.PedidoModel;
 import com.algaworks.algafood.api.v1.model.PedidoResumoModel;
 import com.algaworks.algafood.api.v1.model.input.PedidoInput;
+import com.algaworks.algafood.api.v1.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.algafood.core.data.PageWrapper;
 import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.core.security.AlgaSecurity;
@@ -40,7 +41,7 @@ import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 
 @RestController
 @RequestMapping(value = "/v1/pedidos")
-public class PedidoController {
+public class PedidoController implements PedidoControllerOpenApi {
 	
 	@Autowired
 	private PedidoRepository pedidoRepository;
@@ -64,6 +65,7 @@ public class PedidoController {
 	private AlgaSecurity algaSecurity;
 	
 	@CheckSecurity.Pedidos.PodePesquisar
+	@Override
 	@GetMapping
 	public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
 		Pageable pageableTraduzido = traduzirPageable(pageable);
@@ -76,6 +78,7 @@ public class PedidoController {
 	}
 	
 	@CheckSecurity.Pedidos.PodeBuscar
+	@Override
 	@GetMapping("/{codigoPedido}")
 	public PedidoModel buscar(@PathVariable String codigoPedido) {
 		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
@@ -84,6 +87,7 @@ public class PedidoController {
 	}
 	
 	@CheckSecurity.Pedidos.PodeCriar
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
