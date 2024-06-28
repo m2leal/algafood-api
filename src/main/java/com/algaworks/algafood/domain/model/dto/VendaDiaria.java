@@ -3,11 +3,9 @@ package com.algaworks.algafood.domain.model.dto;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
 @Setter
 public class VendaDiaria {
@@ -16,4 +14,11 @@ public class VendaDiaria {
 	private Long totalVendas;
 	private BigDecimal totalFaturado;
 	
+	// TODO Workaraund por bug no Spring 3.0.0... voltar pro pro @AllArgsConstructor e testar a geração do relatório
+	public VendaDiaria(java.sql.Date data, Long totalVendas, BigDecimal totalFaturado) {
+		this.data = new Date(data.getTime());
+		this.totalVendas = totalVendas;
+		this.totalFaturado = totalFaturado;
+	}
+		
 }
